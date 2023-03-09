@@ -1,76 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js"
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js"
+        }
       }
-    }
-  </script>
-  <link rel="stylesheet" href="./global.css">
-  <title>Floor</title>
-</head>
-<body>
-  <script type="module" defer>
-    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js';
-    import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/controls/OrbitControls.js';
-    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/loaders/GLTFLoader.js';
+    </script>
+    <link rel="stylesheet" href="./global.css" />
+    <title>3D Rock Paper Scissors Sim</title>
+  </head>
+  <body>
+    <script type="module" defer>
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js";
+      import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js";
+      import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js";
+      import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/BoxLineGeometry.js";
 
-    // init
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load(
-    '../res/backgrounds/1_sky.png',
-    () => {
-      const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
-      rt.fromEquirectangularTexture(renderer, texture);
-      scene.background = rt.texture;
-    });
+      // init
+      const loader = new THREE.TextureLoader();
+      const texture = loader.load(
+        "../res/backgrounds/galaxy_starfield.png",
+        () => {
+          const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+          rt.fromEquirectangularTexture(renderer, texture);
+          rt.texture.minFilter = THREE.LinearFilter;
+          scene.background = rt.texture;
+        }
+      );
 
-    //scene, camera and renderer
-    const scene = new THREE.Scene();
+      //scene, camera and renderer
+      const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
-    camera.position.set(0, 0, 1.5)
+      const camera = new THREE.PerspectiveCamera(
+        70,
+        window.innerWidth / window.innerHeight,
+        0.01,
+        10
+      );
+      camera.position.set(0, 0, 1.5);
 
-    const renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
 
-    //lights
-    const light = new THREE.DirectionalLight(0xffffff, 0.5);
-    scene.add(light);
-    const light2 = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light2);
-    
-    //grid helper
-    const size = 1;
-    const divisions = 10;
-    const gridHelper = new THREE.GridHelper( size, divisions );
-    gridHelper.position.set(0,0.5,0)
-    scene.add( gridHelper );
+      //lights
+      const light = new THREE.DirectionalLight(0xffffff, 0.5);
+      scene.add(light);
+      const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(light2);
 
-    //cube
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshNormalMaterial();
-    const mesh = new THREE.Mesh( geometry, material );
-    scene.add( mesh );
+      let room = new THREE.LineSegments(
+        new BoxLineGeometry(1, 1, 1, 1, 1, 1),
+        new THREE.LineBasicMaterial({ color: 0x808080 })
+      );
+      scene.add(room);
 
-    //orbit control
-    const controls = new OrbitControls(camera, renderer.domElement);
-    renderer.setAnimationLoop( animation );
-    controls.update();
-    document.body.appendChild( renderer.domElement );
+      const radius = 0.025;
+      const widthSegments = 32;
+      const heightSegments = 32;
+      const phiStart = 0;
+      const phiLength = Math.PI * 2;
+      const thetaStart = 0;
+      const thetaLength = Math.PI;
 
-    
-    
-    // animation
-    function animation( time ) {
-      console.log(camera.position)
-      renderer.render( scene, camera );
-    }
-  </script>
-</body>
+      const geometry1 = new THREE.SphereGeometry(
+        radius,
+        widthSegments,
+        heightSegments,
+        phiStart,
+        phiLength,
+        thetaStart,
+        thetaLength
+      );
+
+      for (let i = 0; i < 150; i++) {
+        const object = new THREE.Mesh(
+          geometry1,
+          new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
+        );
+
+        object.position.x = Math.random() * 0.97 - 0.5;
+        object.position.y = Math.random() * 0.97 - 0.5;
+        object.position.z = Math.random() * 0.97 - 0.5;
+
+        object.rotation.x = Math.random() * 2 * Math.PI;
+        object.rotation.y = Math.random() * 2 * Math.PI;
+        object.rotation.z = Math.random() * 2 * Math.PI;
+
+        object.scale.set(-1, 1, 1);
+
+        object.userData.velocity = new THREE.Vector3();
+        object.userData.velocity.x = Math.random() * 0.01 - 0.005;
+        object.userData.velocity.y = Math.random() * 0.01 - 0.005;
+        object.userData.velocity.z = Math.random() * 0.01 - 0.005;
+
+        room.add(object);
+      }
+
+      //orbit control
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableZoom = true;
+      renderer.setAnimationLoop(animation);
+      controls.update();
+      document.body.appendChild(renderer.domElement);
+
+      // animation
+      function animation(time) {
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
 </html>
