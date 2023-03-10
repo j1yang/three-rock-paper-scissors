@@ -50,7 +50,8 @@
       //lights
       const light = new THREE.DirectionalLight(0xffffff, 0.5);
       scene.add(light);
-      const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+      const light2 = new THREE.AmbientLight(0xffffff, 0.9);
+      light2.position.set(0, 0, 0);
       scene.add(light2);
 
       let room = new THREE.LineSegments(
@@ -62,15 +63,15 @@
       //create ball
       const recRad = 0.5;
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "red");
+        const sphere = new Sphere(recRad, "red", "rock");
         room.add(sphere);
       }
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "orange");
+        const sphere = new Sphere(recRad, "orange", "paper");
         room.add(sphere);
       }
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "green");
+        const sphere = new Sphere(recRad, "green", "scissors");
         room.add(sphere);
       }
 
@@ -80,8 +81,35 @@
       controls.update();
       document.body.appendChild(renderer.domElement);
 
+      //console.log(room.children);
+
+      function count() {
+        let rock = 0;
+        let paper = 0;
+        let scissors = 0;
+        //console.time("for loop");
+        for (let i = 0; i < room.children.length; i++) {
+          const o = room.children[i];
+          switch (o.name) {
+            case "rock":
+              rock++;
+              break;
+            case "paper":
+              paper++;
+              break;
+            case "scissors":
+              scissors++;
+              break;
+          }
+        }
+        //console.timeEnd("for loop");
+        //console.log("counts", rock, paper, scissors);
+      }
+
       // animation
       function animation(time) {
+        count();
+
         // room.children.forEach((o) => {
         //   o.move();
         // });

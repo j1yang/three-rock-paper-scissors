@@ -18,27 +18,27 @@ const geometry = new THREE.SphereGeometry(
   thetaLength
 );
 
-const vVal = 0.0005;
+const vVal = 0.0008;
 
 export class Sphere extends THREE.Mesh
 {
-  constructor(roomRadius, color) {
+  constructor(roomRadius, color, name) {
     const material = new THREE.MeshLambertMaterial({ color: color });
     super(geometry, material)
     this.respondZone = roomRadius - 0.05;
+    this.color = color;
+    this.name = name;
+
     this.position.copy(new THREE.Vector3(
       Math.random() < 0.5 ? -Math.random() * (this.respondZone) : Math.random() * (this.respondZone),
       Math.random() < 0.5 ? -Math.random() * (this.respondZone) : Math.random() * (this.respondZone),
       Math.random() < 0.5 ? -Math.random() * (this.respondZone) : Math.random() * (this.respondZone)
     ))
-
     this.velocity = new THREE.Vector3(
       Math.random() < 0.5 ? -vVal: vVal,
       Math.random() < 0.5 ? -vVal: vVal,
       Math.random() < 0.5 ? -vVal: vVal
     );
-    //console.log(this)
-    this.color = color;
   }
   
   move(){
