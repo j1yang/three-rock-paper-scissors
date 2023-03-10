@@ -20,7 +20,7 @@
       import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js";
       import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js";
       import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/BoxLineGeometry.js";
-
+      import { Sphere } from "./src/Sphere.js";
       // init
       const loader = new THREE.TextureLoader();
       const texture = loader.load(
@@ -59,49 +59,21 @@
       );
       scene.add(room);
 
-      const radius = 0.025;
-      const widthSegments = 32;
-      const heightSegments = 32;
-      const phiStart = 0;
-      const phiLength = Math.PI * 2;
-      const thetaStart = 0;
-      const thetaLength = Math.PI;
-
-      const geometry1 = new THREE.SphereGeometry(
-        radius,
-        widthSegments,
-        heightSegments,
-        phiStart,
-        phiLength,
-        thetaStart,
-        thetaLength
-      );
-
-      for (let i = 0; i < 150; i++) {
-        const object = new THREE.Mesh(
-          geometry1,
-          new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
-        );
-
-        object.position.x = Math.random() * 0.97 - 0.5;
-        object.position.y = Math.random() * 0.97 - 0.5;
-        object.position.z = Math.random() * 0.97 - 0.5;
-
-        object.rotation.x = Math.random() * 2 * Math.PI;
-        object.rotation.y = Math.random() * 2 * Math.PI;
-        object.rotation.z = Math.random() * 2 * Math.PI;
-
-        object.scale.set(-1, 1, 1);
-
-        object.userData.velocity = new THREE.Vector3();
-        object.userData.velocity.x = Math.random() * 0.01 - 0.005;
-        object.userData.velocity.y = Math.random() * 0.01 - 0.005;
-        object.userData.velocity.z = Math.random() * 0.01 - 0.005;
-
-        room.add(object);
+      //create ball
+      const recRad = 0.5;
+      for (let i = 0; i < 50; i++) {
+        const sphere = new Sphere(recRad, "red");
+        room.add(sphere);
+      }
+      for (let i = 0; i < 50; i++) {
+        const sphere = new Sphere(recRad, "orange");
+        room.add(sphere);
+      }
+      for (let i = 0; i < 50; i++) {
+        const sphere = new Sphere(recRad, "green");
+        room.add(sphere);
       }
 
-      //orbit control
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableZoom = true;
       renderer.setAnimationLoop(animation);
@@ -110,6 +82,9 @@
 
       // animation
       function animation(time) {
+        // room.children.forEach((o) => {
+        //   o.move();
+        // });
         renderer.render(scene, camera);
       }
     </script>
