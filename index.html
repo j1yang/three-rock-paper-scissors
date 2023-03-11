@@ -124,15 +124,16 @@
       }
       // animation
       function animation(time) {
-        count();
-        // room.children.forEach((o) => {
-        //   collisionEvent(o);
-        // });
+        //count();
+
+        collissionEvent();
+
         room.children.forEach((o) => {
           o.move();
         });
-
-        collissionEvent();
+        room.children.forEach((o) => {
+          o.glitchFree();
+        });
 
         renderer.render(scene, camera);
       }

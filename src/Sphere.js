@@ -1,6 +1,6 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js";
 
-const radius = 0.025;
+const radius = 0.03;
 const widthSegments = 32;
 const heightSegments = 32;
 const phiStart = 0;
@@ -45,6 +45,30 @@ export class Sphere extends THREE.Mesh
     );
   }
   
+  glitchFree(){
+    if(!box.containsPoint(this.position)){
+      //this.material.color.set(new THREE.Color('blue').getHex());
+      if ((this.position.x - (radius+0.03)) < box.min.x ) {
+        this.position.x = -this.respondZone;
+      }else if((this.position.x + (radius+0.03)) > box.max.x){
+        this.position.x = this.respondZone;
+      }
+      if ((this.position.y - (radius+0.03)) < box.min.y ) {
+        this.position.y = -this.respondZone;
+      }else if((this.position.y + (radius+0.03)) > box.max.y){
+        this.position.y = this.respondZone;
+      }
+      if ((this.position.z - (radius+0.03)) < box.min.z ) {
+        this.position.z = -this.respondZone;
+      }else if((this.position.z + (radius+0.03)) > box.max.z){
+        this.position.z = this.respondZone;
+      }
+      
+      
+      console.log(this.position)
+    }
+  }
+
   move(){
     this.position.copy(new THREE.Vector3(
       this.position.x + this.velocity.x,
@@ -52,13 +76,13 @@ export class Sphere extends THREE.Mesh
       this.position.z + this.velocity.z
     ))
 
-    if ((this.position.x - (radius-0.003)) < box.min.x || (this.position.x + (radius+0.003)) > box.max.x) {
+    if ((this.position.x - (radius+0.03)) < box.min.x || (this.position.x + (radius+0.03)) > box.max.x) {
       this.velocity.x = -this.velocity.x;
     }
-    if((this.position.y - (radius-0.003)) < box.min.y || (this.position.y + (radius+0.003)) > box.max.y){
+    if((this.position.y - (radius+0.03)) < box.min.y || (this.position.y + (radius+0.03)) > box.max.y){
       this.velocity.y = -this.velocity.y;
     }
-    if((this.position.z - (radius-0.003)) < box.min.z || (this.position.z + (radius+0.003)) > box.max.z){
+    if((this.position.z - (radius+0.03)) < box.min.z || (this.position.z + (radius+0.03)) > box.max.z){
       this.velocity.z = -this.velocity.z;
     }
   }
@@ -73,7 +97,7 @@ export class Sphere extends THREE.Mesh
     const v2 = subBall.velocity.clone();
     this.velocity = v1.sub(normal.clone().multiplyScalar(v1.dot(normal) - v2.dot(normal)));
     subBall.velocity = v2.sub(normal.clone().multiplyScalar(v2.dot(normal) - v1.dot(normal)));
-
+    
     if(this.name != subBall.name){
       if(this.name == 'rock'){
         if(subBall.name == 'paper'){//lose
