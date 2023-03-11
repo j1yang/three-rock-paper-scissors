@@ -63,15 +63,15 @@
       //create ball
       const recRad = 0.5;
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "red", "rock");
+        const sphere = new Sphere(recRad, "red", "rock", room);
         room.add(sphere);
       }
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "orange", "paper");
+        const sphere = new Sphere(recRad, "orange", "paper", room);
         room.add(sphere);
       }
       for (let i = 0; i < 50; i++) {
-        const sphere = new Sphere(recRad, "green", "scissors");
+        const sphere = new Sphere(recRad, "green", "scissors", room);
         room.add(sphere);
       }
 
@@ -80,8 +80,6 @@
       renderer.setAnimationLoop(animation);
       controls.update();
       document.body.appendChild(renderer.domElement);
-
-      //console.log(room.children);
 
       function count() {
         let rock = 0;
@@ -103,16 +101,39 @@
           }
         }
         //console.timeEnd("for loop");
-        //console.log("counts", rock, paper, scissors);
+        console.log(
+          "counts: \n",
+          "rock: ",
+          rock,
+          "paper: ",
+          paper,
+          "scissors: ",
+          scissors,
+          "total: ",
+          rock + paper + scissors
+        );
       }
-
+      function collissionEvent() {
+        for (let i = 0; i < room.children.length; i++) {
+          let mainBall = room.children[i];
+          for (let j = i + 1; j < room.children.length; j++) {
+            let subBall = room.children[j];
+            mainBall.collide(subBall);
+          }
+        }
+      }
       // animation
       function animation(time) {
         count();
-
         // room.children.forEach((o) => {
-        //   o.move();
+        //   collisionEvent(o);
         // });
+        room.children.forEach((o) => {
+          o.move();
+        });
+
+        collissionEvent();
+
         renderer.render(scene, camera);
       }
     </script>
