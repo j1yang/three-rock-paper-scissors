@@ -18,17 +18,27 @@ const geometry = new THREE.SphereGeometry(
   thetaLength
 );
 
-const vVal = 0.0008;
+const vVal = 0.003;//0.0008
+
+let box = new THREE.Box3();
+
+function collisionEvent(ball) {
+  if (box.intersectsSphere(ball)) {
+    // Collision detected!
+    // Do something here, like remove the ball or apply a force
+  }
+}
 
 export class Sphere extends THREE.Mesh
 {
-  constructor(roomRadius, color, name) {
+  constructor(roomRadius, color, name,room) {
     const material = new THREE.MeshLambertMaterial({ color: color });
     super(geometry, material)
     this.respondZone = roomRadius - 0.05;
     this.color = color;
     this.name = name;
-
+    this.room = room;
+    box = new THREE.Box3().setFromObject(this.room);
     this.position.copy(new THREE.Vector3(
       Math.random() < 0.5 ? -Math.random() * (this.respondZone) : Math.random() * (this.respondZone),
       Math.random() < 0.5 ? -Math.random() * (this.respondZone) : Math.random() * (this.respondZone),
@@ -47,5 +57,17 @@ export class Sphere extends THREE.Mesh
       this.position.y + this.velocity.y,
       this.position.z + this.velocity.z
     ))
+
+    if ((this.position.x - radius) < box.min.x || (this.position.x + radius) > box.max.x) {
+      this.velocity.x = -this.velocity.x;
+    }
+    if((this.position.y - radius) < box.min.y || (this.position.y + radius) > box.max.y){
+      this.velocity.y = -this.velocity.y;
+    }
+    if((this.position.z - radius) < box.min.z || (this.position.z + radius) > box.max.z){
+      this.velocity.z = -this.velocity.z;
+    }
   }
+
+  
 }
