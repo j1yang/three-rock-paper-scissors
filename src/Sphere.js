@@ -63,9 +63,7 @@ export class Sphere extends THREE.Mesh
       }else if((this.position.z + (radius+0.03)) > box.max.z){
         this.position.z = this.respondZone;
       }
-      
-      
-      console.log(this.position)
+      //console.log(this.position)
     }
   }
 
