@@ -18,16 +18,10 @@ const geometry = new THREE.SphereGeometry(
   thetaLength
 );
 
-const vVal = 0.003;//0.0008
+const vVal = 0.005;//0.0008 0.005
 
 let box = new THREE.Box3();
 
-function collisionEvent(ball) {
-  if (box.intersectsSphere(ball)) {
-    // Collision detected!
-    // Do something here, like remove the ball or apply a force
-  }
-}
 
 export class Sphere extends THREE.Mesh
 {
@@ -58,13 +52,13 @@ export class Sphere extends THREE.Mesh
       this.position.z + this.velocity.z
     ))
 
-    if ((this.position.x - radius) < box.min.x || (this.position.x + radius) > box.max.x) {
+    if ((this.position.x - (radius-0.003)) < box.min.x || (this.position.x + (radius+0.003)) > box.max.x) {
       this.velocity.x = -this.velocity.x;
     }
-    if((this.position.y - radius) < box.min.y || (this.position.y + radius) > box.max.y){
+    if((this.position.y - (radius-0.003)) < box.min.y || (this.position.y + (radius+0.003)) > box.max.y){
       this.velocity.y = -this.velocity.y;
     }
-    if((this.position.z - radius) < box.min.z || (this.position.z + radius) > box.max.z){
+    if((this.position.z - (radius-0.003)) < box.min.z || (this.position.z + (radius+0.003)) > box.max.z){
       this.velocity.z = -this.velocity.z;
     }
   }
@@ -79,6 +73,40 @@ export class Sphere extends THREE.Mesh
     const v2 = subBall.velocity.clone();
     this.velocity = v1.sub(normal.clone().multiplyScalar(v1.dot(normal) - v2.dot(normal)));
     subBall.velocity = v2.sub(normal.clone().multiplyScalar(v2.dot(normal) - v1.dot(normal)));
+
+    if(this.name != subBall.name){
+      if(this.name == 'rock'){
+        if(subBall.name == 'paper'){//lose
+          this.name = 'paper';
+          this.color = 'orange';
+          this.material.color.set(new THREE.Color('orange').getHex());
+        } else{//win
+          subBall.name = 'rock';
+          subBall.color = 'red';
+          subBall.material.color.set(new THREE.Color('red').getHex());
+        }
+      }else if(this.name == 'paper'){
+        if(subBall.name == 'scissors'){//lose
+          this.name = 'scissors';
+          this.color = 'green';
+          this.material.color.set(new THREE.Color('green').getHex());
+        } else{//win
+          subBall.name = 'paper';
+          subBall.color = 'orange';
+          subBall.material.color.set(new THREE.Color('orange').getHex());
+        }
+      }else if(this.name == 'scissors'){
+        if(subBall.name == 'rock'){//lose
+          this.name = 'rock';
+          this.color = 'red';
+          this.material.color.set(new THREE.Color('red').getHex());
+        } else{//win
+          subBall.name = 'scissors';
+          subBall.color = 'green';
+          subBall.material.color.set(new THREE.Color('green').getHex());
+        }
+      }
+    }
   }
 }
 }
