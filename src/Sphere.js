@@ -69,5 +69,16 @@ export class Sphere extends THREE.Mesh
     }
   }
 
-  
+  collide(subBall){
+    const o1 = new THREE.Box3().setFromObject(this);
+    const o2 = new THREE.Box3().setFromObject(subBall);
+  if (o1.intersectsBox(o2)) {
+    // console.log('hit')
+    const normal = new THREE.Vector3().subVectors(subBall.position, this.position).normalize();
+    const v1 = this.velocity.clone();
+    const v2 = subBall.velocity.clone();
+    this.velocity = v1.sub(normal.clone().multiplyScalar(v1.dot(normal) - v2.dot(normal)));
+    subBall.velocity = v2.sub(normal.clone().multiplyScalar(v2.dot(normal) - v1.dot(normal)));
+  }
+}
 }
