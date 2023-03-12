@@ -135,13 +135,15 @@ function animation(time) {
   count();
 
   collissionEvent();
+  
+  room.children.forEach((o) => {
+    o.glitchFree();
+  });
 
   room.children.forEach((o) => {
     o.move();
   });
-  room.children.forEach((o) => {
-    o.glitchFree();
-  });
+  
 
   renderer.render(scene, camera);
 }
