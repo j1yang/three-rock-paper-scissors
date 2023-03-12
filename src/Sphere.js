@@ -85,6 +85,10 @@ export class Sphere extends THREE.Mesh
     }
   }
 
+  stop(){
+    this.velocity.copy(new THREE.Vector3(0,0,0))
+  }
+
   collide(subBall){
     const o1 = new THREE.Box3().setFromObject(this);
     const o2 = new THREE.Box3().setFromObject(subBall);

@@ -100,18 +100,28 @@
               break;
           }
         }
-        //console.timeEnd("for loop");
-        console.log(
-          "counts: \n",
-          "rock: ",
-          rock,
-          "paper: ",
-          paper,
-          "scissors: ",
-          scissors,
-          "total: ",
-          rock + paper + scissors
-        );
+
+        const scoreDiv = document.querySelector(".score");
+        scoreDiv.innerHTML =
+          "counts: \n" +
+          "rock(red): " +
+          rock +
+          "\npaper(orange): " +
+          paper +
+          "\nscissors(green): " +
+          scissors +
+          "\ntotal: " +
+          (parseInt(rock) + parseInt(paper) + parseInt(scissors));
+        if (rock == 150) {
+          stopBalls(room.children);
+          scoreDiv.innerHTML = "Rock Won!";
+        } else if (paper == 150) {
+          stopBalls(room.children);
+          scoreDiv.innerHTML = "Paper Won!";
+        } else if (scissors == 150) {
+          stopBalls(room.children);
+          scoreDiv.innerHTML = "Scissors Won!";
+        }
       }
       function collissionEvent() {
         for (let i = 0; i < room.children.length; i++) {
@@ -120,6 +130,23 @@
             let subBall = room.children[j];
             mainBall.collide(subBall);
           }
+        }
+      }
+      function stopBalls(balls) {
+        balls.forEach((o) => {
+          o.stop();
+        });
+      }
+      function checkGameOver(rock, paper, scissors, balls) {
+        if (rock == 150) {
+          stopBalls(balls);
+          return "Rock Won!";
+        } else if (paper == 150) {
+          stopBalls(balls);
+          return "Paper Won!";
+        } else if (scissors == 150) {
+          stopBalls(balls);
+          return "Scissors Won!";
         }
       }
       // animation
@@ -138,5 +165,6 @@
         renderer.render(scene, camera);
       }
     </script>
+    <div class="score"></div>
   </body>
 </html>
