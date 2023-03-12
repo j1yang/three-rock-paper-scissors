@@ -28,6 +28,11 @@ camera.position.set(0, 0, 1.5);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+window.addEventListener('resize', function() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+});
+
 //lights
 const light = new THREE.DirectionalLight(0xffffff, 0.5);
 scene.add(light);
@@ -135,7 +140,7 @@ function animation(time) {
   count();
 
   collissionEvent();
-  
+
   room.children.forEach((o) => {
     o.glitchFree();
   });
