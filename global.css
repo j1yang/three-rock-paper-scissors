@@ -6,4 +6,9 @@ canvas {
   height: 100%;
   display: block;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.score{
+  z-index: 0;
 }
