@@ -102,11 +102,11 @@ function count() {
   scoreDiv.innerHTML =
     "counts: \n" +
     "rock(red): " +
-    rock +
+    (rock /150 *100).toFixed(0) + "%"+
     "\npaper(orange): " +
-    paper +
+    (paper /150 *100).toFixed(0) + "%"+
     "\nscissors(green): " +
-    scissors +
+    (scissors /150 *100).toFixed(0) + "%"+
     "\ntotal: " +
     (parseInt(rock) + parseInt(paper) + parseInt(scissors));
   if (rock == 150) {
