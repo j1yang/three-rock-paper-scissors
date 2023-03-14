@@ -2,17 +2,6 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.m
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js";
 import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/BoxLineGeometry.js";
 import { Sphere } from "./Sphere.js";
-// init
-const loader = new THREE.TextureLoader();
-const texture = loader.load(
-  "../res/backgrounds/galaxy_starfield.png",
-  () => {
-    const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
-    rt.fromEquirectangularTexture(renderer, texture);
-    rt.texture.minFilter = THREE.LinearFilter;
-    scene.background = rt.texture;
-  }
-);
 
 //scene, camera and renderer
 const scene = new THREE.Scene();
@@ -23,14 +12,34 @@ const camera = new THREE.PerspectiveCamera(
   0.01,
   10
 );
-camera.position.set(0, 0, 1.5);
+camera.position.set(1.5, 0.5, 2);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.autoClear = false;
+renderer.setClearColor(0x000000, 0.0);
+
+var particle = new THREE.Object3D();
+
+scene.add(particle);
+
+var geometry = new THREE.TetrahedronGeometry(0.0085, 0);
+
+var material = new THREE.MeshPhongMaterial({
+  color: 0xffffff,
+  shading: THREE.FlatShading
+});
+
+for (var i = 0; i < 1000; i++) {
+  var mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+  mesh.position.multiplyScalar(1.5 + (Math.random() * 2));
+  mesh.rotation.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+  particle.add(mesh);
+}
 
 window.addEventListener('resize', function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
-
 });
 
 //lights
@@ -62,9 +71,11 @@ for (let i = 0; i < 50; i++) {
 }
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableZoom = true;
-renderer.setAnimationLoop(animation);
+controls.enableZoom = false;
+controls.enableRotate = false;
 controls.update();
+
+renderer.setAnimationLoop(animation);
 document.body.appendChild(renderer.domElement);
 
 function count() {
@@ -109,6 +120,7 @@ function count() {
     scoreDiv.innerHTML = "Scissors Won!";
   }
 }
+
 function collissionEvent() {
   for (let i = 0; i < room.children.length; i++) {
     let mainBall = room.children[i];
@@ -118,25 +130,21 @@ function collissionEvent() {
     }
   }
 }
+
 function stopBalls(balls) {
   balls.forEach((o) => {
     o.stop();
   });
 }
-function checkGameOver(rock, paper, scissors, balls) {
-  if (rock == 150) {
-    stopBalls(balls);
-    return "Rock Won!";
-  } else if (paper == 150) {
-    stopBalls(balls);
-    return "Paper Won!";
-  } else if (scissors == 150) {
-    stopBalls(balls);
-    return "Scissors Won!";
-  }
-}
+
 // animation
 function animation(time) {
+  particle.rotation.x += 0.0000;
+  particle.rotation.y -= 0.0040;
+  room.rotation.y -= 0.0030;
+
+  renderer.clear();
+
   count();
 
   collissionEvent();
