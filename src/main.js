@@ -100,15 +100,13 @@ function count() {
 
   const scoreDiv = document.querySelector(".score");
   scoreDiv.innerHTML =
-    "counts: \n" +
     "rock(red): " +
     (rock /150 *100).toFixed(0) + "%"+
     "\npaper(orange): " +
     (paper /150 *100).toFixed(0) + "%"+
     "\nscissors(green): " +
-    (scissors /150 *100).toFixed(0) + "%"+
-    "\ntotal: " +
-    (parseInt(rock) + parseInt(paper) + parseInt(scissors));
+    (scissors /150 *100).toFixed(0) + "%";
+
   if (rock == 150) {
     stopBalls(room.children);
     scoreDiv.innerHTML = "Rock Won!";

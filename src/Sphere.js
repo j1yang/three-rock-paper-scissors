@@ -48,19 +48,19 @@ export class Sphere extends THREE.Mesh
   glitchFree(){
     if(!box.containsPoint(this.position)){
       //this.material.color.set(new THREE.Color('blue').getHex());
-      if ((this.position.x - (radius+0.03)) < box.min.x ) {
+      if ((this.position.x - (radius+0.07)) < box.min.x ) {
         this.position.x = -this.respondZone;
-      }else if((this.position.x + (radius+0.03)) > box.max.x){
+      }else if((this.position.x + (radius+0.07)) > box.max.x){
         this.position.x = this.respondZone;
       }
-      if ((this.position.y - (radius+0.03)) < box.min.y ) {
+      if ((this.position.y - (radius+0.07)) < box.min.y ) {
         this.position.y = -this.respondZone;
-      }else if((this.position.y + (radius+0.03)) > box.max.y){
+      }else if((this.position.y + (radius+0.07)) > box.max.y){
         this.position.y = this.respondZone;
       }
-      if ((this.position.z - (radius+0.03)) < box.min.z ) {
+      if ((this.position.z - (radius+0.07)) < box.min.z ) {
         this.position.z = -this.respondZone;
-      }else if((this.position.z + (radius+0.03)) > box.max.z){
+      }else if((this.position.z + (radius+0.07)) > box.max.z){
         this.position.z = this.respondZone;
       }
       //console.log(this.position)
