@@ -19,6 +19,15 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.autoClear = false;
 renderer.setClearColor(0x000000, 0.0);
 
+
+
+
+
+
+
+
+
+
 var particle = new THREE.Object3D();
 
 scene.add(particle);
@@ -38,9 +47,24 @@ for (var i = 0; i < 1000; i++) {
   particle.add(mesh);
 }
 
+
+
+
+
+
+
 window.addEventListener('resize', function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+
+
+
+
+
+
+
+
 
 //lights
 const light = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -48,6 +72,14 @@ scene.add(light);
 const light2 = new THREE.AmbientLight(0xffffff, 0.9);
 light2.position.set(0, 0, 0);
 scene.add(light2);
+
+
+
+
+
+
+
+
 
 let room = new THREE.LineSegments(
   new BoxLineGeometry(1, 1, 1, 1, 1, 1),
@@ -70,18 +102,44 @@ for (let i = 0; i < 50; i++) {
   room.add(sphere);
 }
 
+
+
+
+
+
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableZoom = false;
-controls.enableRotate = false;
+controls.enableZoom = true;
+controls.enableRotate = true;
 controls.update();
 
 renderer.setAnimationLoop(animation);
 document.body.appendChild(renderer.domElement);
 
+
+
+let rock, paper, scissors;
+
+let iSize = 0.4;
+const redBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
+const redMat = new THREE.MeshBasicMaterial({color: new THREE.Color('red').getHex()});
+const redMesh = new THREE.Mesh(redBoxGeo, redMat);
+scene.add(redMesh)
+
+const orangeBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
+const orangeMat = new THREE.MeshBasicMaterial({color: new THREE.Color('orange').getHex()});
+const orangeMesh = new THREE.Mesh(orangeBoxGeo, orangeMat);
+scene.add(orangeMesh)
+
+const greenBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
+const greenMat = new THREE.MeshBasicMaterial({color: new THREE.Color('green').getHex()});
+const greenMesh = new THREE.Mesh(greenBoxGeo, greenMat);
+scene.add(greenMesh)
+
+
 function count() {
-  let rock = 0;
-  let paper = 0;
-  let scissors = 0;
+  rock = 0;
+  paper = 0;
+  scissors = 0;
   //console.time("for loop");
   for (let i = 0; i < room.children.length; i++) {
     const o = room.children[i];
@@ -97,6 +155,28 @@ function count() {
         break;
     }
   }
+// get the camera's right and top vectors
+console.log(camera)
+console.log(redMesh)
+  redMesh.scale.set(iSize,2*(rock / 150),10)
+  redMesh.position.set(camera.projectionMatrix.elements[5],0,0); //0,5,10,14
+
+  orangeMesh.scale.set(iSize,2*(paper / 150),10)
+  orangeMesh.position.set(camera.projectionMatrix.elements[5]-0.2,0,0);
+
+  greenMesh.scale.set(iSize,2*(scissors / 150),10)
+  greenMesh.position.set(camera.projectionMatrix.elements[5]-0.4,0,0);
+
+  // redMesh.rotation.set(0, Math.PI /6 ,Math.PI /2)
+  // orangeMesh.rotation.set(0, Math.PI /6,Math.PI /2)
+  // greenMesh.rotation.set(0, Math.PI /6,Math.PI /2)
+  // redMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
+  // orangeMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
+  // greenMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
+
+  // redMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
+  // orangeMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
+  // greenMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
 
   const scoreDiv = document.querySelector(".score");
   scoreDiv.innerHTML =
@@ -134,6 +214,12 @@ function stopBalls(balls) {
     o.stop();
   });
 }
+
+
+
+
+
+
 
 // animation
 function animation(time) {
