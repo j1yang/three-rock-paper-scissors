@@ -128,32 +128,60 @@ document.body.appendChild(renderer.domElement);
 let rock, paper, scissors;
 const texts = ['rock', 'paper', 'scissors'];
 
-const fontLoader = new FontLoader();
-const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-  let space = 0;
-  let rot = 8
-  texts.forEach((t)=>{
-    const textGeometry = new TextGeometry(t, {
-      font: font,
-      size: 0.05,
-      height: 0.05,
-      curveSegments: 12,
-      bevelEnabled: false,
-      bevelThickness: 0,
-      bevelSize: 0,
-      bevelOffset: 0,
-      bevelSegments: 0,
-    });
+// const fontLoader = new FontLoader();
+// const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+//   let space = 0;
+//   let rot = 8
+//   texts.forEach((t)=>{
+//     const textGeometry = new TextGeometry(t, {
+//       font: font,
+//       size: 0.05,
+//       height: 0.05,
+//       curveSegments: 12,
+//       bevelEnabled: false,
+//       bevelThickness: 0,
+//       bevelSize: 0,
+//       bevelOffset: 0,
+//       bevelSegments: 0,
+//     });
   
-    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
-    const textMesh = new THREE.Mesh(textGeometry, material);
-    textMesh.position.set(camera.projectionMatrix.elements[5]-0.48 + space, -0.5,0);
-    space+=0.2;
-    textMesh.rotation.set(camera.rotation.x,camera.rotation.y -Math.PI/rot,camera.rotation.z-Math.PI/16)
-  rot-1
-    scene.add(textMesh);
-  })
-});
+//     const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
+//     const textMesh = new THREE.Mesh(textGeometry, material);
+//     textMesh.position.set(camera.projectionMatrix.elements[5]-0.48 + space, -0.5,0);
+//     space+=0.2;
+//     textMesh.rotation.set(camera.rotation.x,camera.rotation.y -Math.PI/rot,camera.rotation.z-Math.PI/16)
+//   rot-1
+//     scene.add(textMesh);
+//   })
+// });
+
+var rockMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.16, 0.16),
+  new THREE.MeshBasicMaterial({
+    map: rockTex
+}
+));
+scene.add(rockMesh)
+
+var paperMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.16, 0.16),
+  new THREE.MeshBasicMaterial({
+    map: paperTex
+}
+));
+scene.add(paperMesh)
+
+var scissorsMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.16, 0.16),
+  new THREE.MeshBasicMaterial({
+    map: scissorsTex
+}
+));
+scene.add(scissorsMesh)
+
+rockMesh.position.set(camera.projectionMatrix.elements[5]-0.4,-0.5,0); //0,5,10,14
+paperMesh.position.set(camera.projectionMatrix.elements[5]-0.2,-0.5,0); //0,5,10,14
+scissorsMesh.position.set(camera.projectionMatrix.elements[5],-0.5,0); //0,5,10,14
 
 let iSize = 0.4;
 const redBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
@@ -191,9 +219,6 @@ function count() {
         break;
     }
   }
-// get the camera's right and top vectors
-console.log(camera)
-console.log(redMesh)
   redMesh.scale.set(iSize,2*(rock / 150),10)
   redMesh.position.set(camera.projectionMatrix.elements[5]-0.4,0.4 *(rock/150) -0.4,0); //0,5,10,14
 
@@ -203,12 +228,6 @@ console.log(redMesh)
   greenMesh.scale.set(iSize,2*(scissors / 150),10)
   greenMesh.position.set(camera.projectionMatrix.elements[5],0.4 *(scissors/150)-0.4,0);
 
-  // redMesh.rotation.set(0, Math.PI /6 ,Math.PI /2)
-  // orangeMesh.rotation.set(0, Math.PI /6,Math.PI /2)
-  // greenMesh.rotation.set(0, Math.PI /6,Math.PI /2)
-  // redMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
-  // orangeMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
-  // greenMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
 
   redMesh.rotation.set(0,0,0)
   orangeMesh.rotation.set(0,0,0)
