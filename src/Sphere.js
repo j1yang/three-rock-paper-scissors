@@ -25,8 +25,8 @@ let box = new THREE.Box3();
 
 export class Sphere extends THREE.Mesh
 {
-  constructor(roomRadius, color, name,room) {
-    const material = new THREE.MeshLambertMaterial({ color: color });
+  constructor(roomRadius, color, name,room,texture) {
+    const material = new THREE.MeshLambertMaterial({ color: color, alphaMap : texture});
     super(geometry, material)
     this.respondZone = roomRadius - 0.05;
     this.color = color;

@@ -2,7 +2,8 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.m
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js";
 import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/BoxLineGeometry.js";
 import { Sphere } from "./Sphere.js";
-
+import { TextGeometry} from"https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/TextGeometry.js";
+import {FontLoader} from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/FontLoader.js";
 //scene, camera and renderer
 const scene = new THREE.Scene();
 
@@ -87,18 +88,25 @@ let room = new THREE.LineSegments(
 );
 scene.add(room);
 
+
+const textureLoader = new THREE.TextureLoader();
+const rockTex = textureLoader.load('../res/imgs/rock.png');
+const paperTex = textureLoader.load('../res/imgs/paper.png');
+const scissorsTex = textureLoader.load('../res/imgs/scissors.png');
+
+
 //create ball
 const recRad = 0.5;
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "red", "rock", room);
+  const sphere = new Sphere(recRad, "red", "rock", room, rockTex);
   room.add(sphere);
 }
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "orange", "paper", room);
+  const sphere = new Sphere(recRad, "orange", "paper", room, paperTex);
   room.add(sphere);
 }
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "green", "scissors", room);
+  const sphere = new Sphere(recRad, "green", "scissors", room, scissorsTex);
   room.add(sphere);
 }
 
@@ -118,6 +126,34 @@ document.body.appendChild(renderer.domElement);
 
 
 let rock, paper, scissors;
+const texts = ['rock', 'paper', 'scissors'];
+
+const fontLoader = new FontLoader();
+const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+  let space = 0;
+  let rot = 8
+  texts.forEach((t)=>{
+    const textGeometry = new TextGeometry(t, {
+      font: font,
+      size: 0.05,
+      height: 0.05,
+      curveSegments: 12,
+      bevelEnabled: false,
+      bevelThickness: 0,
+      bevelSize: 0,
+      bevelOffset: 0,
+      bevelSegments: 0,
+    });
+  
+    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
+    const textMesh = new THREE.Mesh(textGeometry, material);
+    textMesh.position.set(camera.projectionMatrix.elements[5]-0.48 + space, -0.5,0);
+    space+=0.2;
+    textMesh.rotation.set(camera.rotation.x,camera.rotation.y -Math.PI/rot,camera.rotation.z-Math.PI/16)
+  rot-1
+    scene.add(textMesh);
+  })
+});
 
 let iSize = 0.4;
 const redBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
@@ -159,13 +195,13 @@ function count() {
 console.log(camera)
 console.log(redMesh)
   redMesh.scale.set(iSize,2*(rock / 150),10)
-  redMesh.position.set(camera.projectionMatrix.elements[5],0,0); //0,5,10,14
+  redMesh.position.set(camera.projectionMatrix.elements[5]-0.4,0.4 *(rock/150) -0.4,0); //0,5,10,14
 
   orangeMesh.scale.set(iSize,2*(paper / 150),10)
-  orangeMesh.position.set(camera.projectionMatrix.elements[5]-0.2,0,0);
+  orangeMesh.position.set(camera.projectionMatrix.elements[5] - 0.2,0.4 *(paper/150)-0.4,0);
 
   greenMesh.scale.set(iSize,2*(scissors / 150),10)
-  greenMesh.position.set(camera.projectionMatrix.elements[5]-0.4,0,0);
+  greenMesh.position.set(camera.projectionMatrix.elements[5],0.4 *(scissors/150)-0.4,0);
 
   // redMesh.rotation.set(0, Math.PI /6 ,Math.PI /2)
   // orangeMesh.rotation.set(0, Math.PI /6,Math.PI /2)
@@ -174,28 +210,28 @@ console.log(redMesh)
   // orangeMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
   // greenMesh.quaternion.set(camera.quaternion.x,camera.quaternion.y,camera.quaternion.z ,camera.quaternion.w)
 
-  // redMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
-  // orangeMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
-  // greenMesh.rotation.set(camera.rotation.x,camera.rotation.y,camera.rotation.z)
+  redMesh.rotation.set(0,0,0)
+  orangeMesh.rotation.set(0,0,0)
+  greenMesh.rotation.set(0,0,0)
 
-  const scoreDiv = document.querySelector(".score");
-  scoreDiv.innerHTML =
-    "rock(red): " +
-    (rock /150 *100).toFixed(0) + "%"+
-    "\npaper(orange): " +
-    (paper /150 *100).toFixed(0) + "%"+
-    "\nscissors(green): " +
-    (scissors /150 *100).toFixed(0) + "%";
+  // const scoreDiv = document.querySelector(".score");
+  // scoreDiv.innerHTML =
+  //   "rock(red): " +
+  //   (rock /150 *100).toFixed(0) + "%"+
+  //   "\npaper(orange): " +
+  //   (paper /150 *100).toFixed(0) + "%"+
+  //   "\nscissors(green): " +
+  //   (scissors /150 *100).toFixed(0) + "%";
 
   if (rock == 150) {
     stopBalls(room.children);
-    scoreDiv.innerHTML = "Rock Won!";
+    // scoreDiv.innerHTML = "Rock Won!";
   } else if (paper == 150) {
     stopBalls(room.children);
-    scoreDiv.innerHTML = "Paper Won!";
+    // scoreDiv.innerHTML = "Paper Won!";
   } else if (scissors == 150) {
     stopBalls(room.children);
-    scoreDiv.innerHTML = "Scissors Won!";
+    // scoreDiv.innerHTML = "Scissors Won!";
   }
 }
 
