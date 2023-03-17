@@ -4,6 +4,7 @@ import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/exam
 import { Sphere } from "./Sphere.js";
 import { TextGeometry} from"https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/TextGeometry.js";
 import {FontLoader} from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/FontLoader.js";
+import {Stats} from "https://cdnjs.cloudflare.com/ajax/libs/stats.js/r17/Stats.min.js";
 //scene, camera and renderer
 const scene = new THREE.Scene();
 
@@ -23,7 +24,9 @@ renderer.setClearColor(0x000000, 0.0);
 
 
 
-
+var stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 
 
@@ -116,8 +119,8 @@ for (let i = 0; i < 50; i++) {
 
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableZoom = true;
-controls.enableRotate = true;
+controls.enableZoom = false;
+controls.enableRotate = false;
 controls.update();
 
 renderer.setAnimationLoop(animation);
@@ -126,7 +129,6 @@ document.body.appendChild(renderer.domElement);
 
 
 let rock, paper, scissors;
-const texts = ['rock', 'paper', 'scissors'];
 
 // const fontLoader = new FontLoader();
 // const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
@@ -158,7 +160,8 @@ const texts = ['rock', 'paper', 'scissors'];
 var rockMesh = new THREE.Mesh(
   new THREE.PlaneGeometry(0.16, 0.16),
   new THREE.MeshBasicMaterial({
-    map: rockTex
+    map: rockTex,
+    alphaTest: 0.1
 }
 ));
 scene.add(rockMesh)
@@ -166,7 +169,8 @@ scene.add(rockMesh)
 var paperMesh = new THREE.Mesh(
   new THREE.PlaneGeometry(0.16, 0.16),
   new THREE.MeshBasicMaterial({
-    map: paperTex
+    map: paperTex,
+    alphaTest: 0.1
 }
 ));
 scene.add(paperMesh)
@@ -174,7 +178,8 @@ scene.add(paperMesh)
 var scissorsMesh = new THREE.Mesh(
   new THREE.PlaneGeometry(0.16, 0.16),
   new THREE.MeshBasicMaterial({
-    map: scissorsTex
+    map: scissorsTex,
+    alphaTest: 0.1
 }
 ));
 scene.add(scissorsMesh)
@@ -278,6 +283,7 @@ function stopBalls(balls) {
 
 // animation
 function animation(time) {
+  stats.begin();
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
   room.rotation.y -= 0.0030;
@@ -298,4 +304,5 @@ function animation(time) {
   
 
   renderer.render(scene, camera);
+  stats.end();
 }

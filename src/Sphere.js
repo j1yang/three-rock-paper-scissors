@@ -43,6 +43,7 @@ export class Sphere extends THREE.Mesh
       Math.random() < 0.5 ? -vVal: vVal,
       Math.random() < 0.5 ? -vVal: vVal
     );
+    this.isEnd = false;
   }
   
   glitchFree(){
@@ -68,37 +69,40 @@ export class Sphere extends THREE.Mesh
   }
 
   move(){
-    this.position.copy(new THREE.Vector3(
-      this.position.x + this.velocity.x,
-      this.position.y + this.velocity.y,
-      this.position.z + this.velocity.z
-    ))
-
-    if ((this.position.x - (radius+0.03)) < box.min.x || (this.position.x + (radius+0.03)) > box.max.x) {
-      this.velocity.x = -this.velocity.x;
-    }
-    if((this.position.y - (radius+0.03)) < box.min.y || (this.position.y + (radius+0.03)) > box.max.y){
-      this.velocity.y = -this.velocity.y;
-    }
-    if((this.position.z - (radius+0.03)) < box.min.z || (this.position.z + (radius+0.03)) > box.max.z){
-      this.velocity.z = -this.velocity.z;
+    if(!this.isEnd){
+      this.position.copy(new THREE.Vector3(
+        this.position.x + this.velocity.x,
+        this.position.y + this.velocity.y,
+        this.position.z + this.velocity.z
+      ))
+  
+      if ((this.position.x - (radius+0.03)) < box.min.x || (this.position.x + (radius+0.03)) > box.max.x) {
+        this.velocity.x = -this.velocity.x;
+      }
+      if((this.position.y - (radius+0.03)) < box.min.y || (this.position.y + (radius+0.03)) > box.max.y){
+        this.velocity.y = -this.velocity.y;
+      }
+      if((this.position.z - (radius+0.03)) < box.min.z || (this.position.z + (radius+0.03)) > box.max.z){
+        this.velocity.z = -this.velocity.z;
+      }
     }
   }
 
   stop(){
     this.velocity.copy(new THREE.Vector3(0,0,0))
+    this.isEnd = true;
   }
 
   collide(subBall){
     const o1 = new THREE.Box3().setFromObject(this);
     const o2 = new THREE.Box3().setFromObject(subBall);
-  if (o1.intersectsBox(o2)) {
-    // console.log('hit')
-    const normal = new THREE.Vector3().subVectors(subBall.position, this.position).normalize();
-    const v1 = this.velocity.clone();
-    const v2 = subBall.velocity.clone();
-    this.velocity = v1.sub(normal.clone().multiplyScalar(v1.dot(normal) - v2.dot(normal)));
-    subBall.velocity = v2.sub(normal.clone().multiplyScalar(v2.dot(normal) - v1.dot(normal)));
+    if (o1.intersectsBox(o2)) {
+      // console.log('hit')
+      const normal = new THREE.Vector3().subVectors(subBall.position, this.position).normalize();
+      const v1 = this.velocity.clone();
+      const v2 = subBall.velocity.clone();
+      this.velocity = v1.sub(normal.clone().multiplyScalar(v1.dot(normal) - v2.dot(normal)));
+      subBall.velocity = v2.sub(normal.clone().multiplyScalar(v2.dot(normal) - v1.dot(normal)));
     
     if(this.name != subBall.name){
       if(this.name == 'rock'){
