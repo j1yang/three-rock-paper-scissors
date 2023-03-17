@@ -132,29 +132,41 @@ let rock, paper, scissors;
 
 // const fontLoader = new FontLoader();
 // const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-//   let space = 0;
-//   let rot = 8
-//   texts.forEach((t)=>{
-//     const textGeometry = new TextGeometry(t, {
-//       font: font,
-//       size: 0.05,
-//       height: 0.05,
-//       curveSegments: 12,
-//       bevelEnabled: false,
-//       bevelThickness: 0,
-//       bevelSize: 0,
-//       bevelOffset: 0,
-//       bevelSegments: 0,
-//     });
-  
-//     const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
-//     const textMesh = new THREE.Mesh(textGeometry, material);
-//     textMesh.position.set(camera.projectionMatrix.elements[5]-0.48 + space, -0.5,0);
-//     space+=0.2;
-//     textMesh.rotation.set(camera.rotation.x,camera.rotation.y -Math.PI/rot,camera.rotation.z-Math.PI/16)
-//   rot-1
-//     scene.add(textMesh);
-//   })
+//   let text = 'Rock Payer Scissor!',
+
+//     bevelEnabled = true;
+
+//   const height = 0.3,
+//     size = 0.3,
+//     hover = 30,
+
+//     curveSegments = 12,
+
+//     bevelThickness = 0,
+//     bevelSize = 0;
+
+//   let textGeometry = new TextGeometry(text, {
+//     font: font,
+//     size: size,
+//     height: height,
+//     curveSegments: curveSegments,
+
+//     bevelThickness: bevelThickness,
+//     bevelSize: bevelSize,
+//     bevelEnabled: bevelEnabled
+//   });
+
+//   const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
+//   const textMesh = new THREE.Mesh(textGeometry, material);
+//   // const centerOffset = - 0.5 * ( textGeometry.position.max.x - textGeometry.boundingBox.min.x );
+//   console.log(textGeometry)
+//   textMesh.position.x = -2;
+//   textMesh.position.y = 1;
+//   textMesh.position.z = 0;
+
+//   textMesh.rotation.x = 0;
+//   textMesh.rotation.y = 0.5;
+//   scene.add(textMesh);
 // });
 
 var rockMesh = new THREE.Mesh(
