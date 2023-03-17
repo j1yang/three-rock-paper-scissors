@@ -4,7 +4,7 @@ import { BoxLineGeometry } from "https://cdn.jsdelivr.net/npm/three@0.150.1/exam
 import { Sphere } from "./Sphere.js";
 import { TextGeometry} from"https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/TextGeometry.js";
 import {FontLoader} from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/FontLoader.js";
-import {Stats} from "https://cdnjs.cloudflare.com/ajax/libs/stats.js/r17/Stats.min.js";
+import Stats from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/libs/stats.module.js";
 //scene, camera and renderer
 const scene = new THREE.Scene();
 
@@ -24,9 +24,9 @@ renderer.setClearColor(0x000000, 0.0);
 
 
 
-var stats = new Stats();
-stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
+// const stats = new Stats();
+// stats.showPanel( 1 );  // 0: fps, 1: ms, 2: mb, 3+: custom
+// document.body.appendChild( stats.dom );
 
 
 
@@ -283,7 +283,6 @@ function stopBalls(balls) {
 
 // animation
 function animation(time) {
-  stats.begin();
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
   room.rotation.y -= 0.0030;
@@ -304,5 +303,5 @@ function animation(time) {
   
 
   renderer.render(scene, camera);
-  stats.end();
+  // stats.update()
 }
