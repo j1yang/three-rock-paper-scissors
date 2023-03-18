@@ -291,7 +291,7 @@ function stopBalls(balls) {
 
 
 const replayBtn = document.querySelector('.replay');
-replayBtn.style.display = 'block';
+replayBtn.style.display = 'none';
 
 replayBtn.addEventListener('click', function() {
   location.reload();
