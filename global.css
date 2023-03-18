@@ -14,14 +14,14 @@ canvas {
 
 .body_title{
   position: fixed;
-  top: 50px;
+  top: 35px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 70px;
   font-weight: 500;
   font-family: 'Fredoka One', cursive;
   color: #363535;
-
+text-align: center;
 }
 
 .replay {

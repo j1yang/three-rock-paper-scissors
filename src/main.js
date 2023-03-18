@@ -294,6 +294,7 @@ const replayBtn = document.querySelector('.replay');
 replayBtn.style.display = 'none';
 
 replayBtn.addEventListener('click', function() {
+  replayBtn.style.display = 'none';
   location.reload();
 });
 
