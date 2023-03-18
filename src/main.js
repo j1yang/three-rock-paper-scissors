@@ -17,6 +17,7 @@ guessBtns.push(guessRockBtn);
 guessBtns.push(guessPaperBtn);
 guessBtns.push(guessScissorsBtn);
 let guesses = ['Rock', 'Paper', 'Scissors'];
+const gameResult = document.querySelector('.game_result')
 
 for (let i = 0; i < guessBtns.length; i++) {
   guessBtns[i].addEventListener("click", function() {
@@ -24,7 +25,7 @@ for (let i = 0; i < guessBtns.length; i++) {
       guessBtns[j].classList.remove("active");
     }
     user_guess = guesses[i];
-    guessTitle.innerHTML= 'Your guessed ' + user_guess;
+    guessTitle.innerHTML= 'Your guessed {' + user_guess +'}';
 
     // Add the active class to the clicked button
     this.classList.add("active");
@@ -153,6 +154,7 @@ document.body.appendChild(renderer.domElement);
 
 //live result
 let rock, paper, scissors;
+let isGameEnd = false;
 
 //display texture (rps)
 var rockMesh = new THREE.Mesh(
@@ -209,6 +211,7 @@ function count() {
   rock = 0;
   paper = 0;
   scissors = 0;
+  
   //console.time("for loop");
   for (let i = 0; i < room.children.length; i++) {
     const o = room.children[i];
@@ -238,9 +241,37 @@ function count() {
   orangeMesh.rotation.set(0,0,0)
   greenMesh.rotation.set(0,0,0)
 
-  if (rock == 150 || paper == 150 || scissors == 150) {
+  if (rock == 150 ) {
+    isGameEnd = true;
     stopBalls(room.children);
+    gameResult.innerHTML = 'Rock Won!';
+  }else if (paper == 150) {
+    isGameEnd = true;
+    stopBalls(room.children);
+    gameResult.innerHTML = 'Paper Won!';
+  }else if (scissors == 150) {
+    isGameEnd = true;
+    stopBalls(room.children);
+    gameResult.innerHTML = 'Scissors Won!';
   }
+
+  if(!isGameEnd){
+    if (rock > paper && rock > scissors) {
+      gameResult.innerHTML= `Rock is winning!`;
+    } else if (paper > rock && paper > scissors) {
+      gameResult.innerHTML = "Paper is winning!";
+    } else if (scissors > rock && scissors > paper) {
+      gameResult.innerHTML = "Scissors is winning!";
+    }
+  }else{
+    
+  }
+
+  
+
+  // determine which response was picked the most
+
+  
 }
 
 function collissionEvent() {

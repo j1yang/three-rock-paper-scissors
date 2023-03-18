@@ -40,7 +40,18 @@ body {
 
 .guess_title{
   position: fixed;
-  bottom: 110px;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: 500;
+  font-family: 'Fredoka One', cursive;
+  color: #1d1d1d;
+  text-align: center;
+}
+.game_result{
+  position: fixed;
+  bottom: 115px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 30px;
