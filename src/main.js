@@ -153,7 +153,7 @@ document.body.appendChild(renderer.domElement);
 
 
 //live result
-let rock, paper, scissors;
+let rock, paper, scissors, winner;
 let isGameEnd = false;
 
 //display texture (rps)
@@ -240,19 +240,18 @@ function count() {
   redMesh.rotation.set(0,0,0)
   orangeMesh.rotation.set(0,0,0)
   greenMesh.rotation.set(0,0,0)
-
   if (rock == 150 ) {
     isGameEnd = true;
+    winner ='Rock'
     stopBalls(room.children);
-    gameResult.innerHTML = 'Rock Won!';
   }else if (paper == 150) {
     isGameEnd = true;
+    winner ='Paper'
     stopBalls(room.children);
-    gameResult.innerHTML = 'Paper Won!';
   }else if (scissors == 150) {
     isGameEnd = true;
+    winner ='Scissors'
     stopBalls(room.children);
-    gameResult.innerHTML = 'Scissors Won!';
   }
 
   if(!isGameEnd){
@@ -264,7 +263,11 @@ function count() {
       gameResult.innerHTML = "Scissors is winning!";
     }
   }else{
-    
+    if(user_guess === winner){
+      gameResult.innerHTML = 'You Won!';
+    }else{
+      gameResult.innerHTML = 'You Lost!';
+    }
   }
 
   
