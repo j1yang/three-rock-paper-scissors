@@ -285,12 +285,17 @@ function stopBalls(balls) {
   balls.forEach((o) => {
     o.stop();
   });
+  replayBtn.style.display = 'block';
 }
 
 
 
+const replayBtn = document.querySelector('.replay');
+replayBtn.style.display = 'block';
 
-
+replayBtn.addEventListener('click', function() {
+  location.reload();
+});
 
 
 // animation
