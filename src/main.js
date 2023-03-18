@@ -9,19 +9,23 @@ import Stats from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/libs/
 let user_guess = '';
 let onGame = false;
 let guessBtns = [];
+const guessTitle = document.querySelector('.guess_title')
 const guessRockBtn = document.querySelector('.guess_rock')
 const guessPaperBtn = document.querySelector('.guess_paper')
 const guessScissorsBtn = document.querySelector('.guess_scissors')
 guessBtns.push(guessRockBtn);
 guessBtns.push(guessPaperBtn);
 guessBtns.push(guessScissorsBtn);
+let guesses = ['Rock', 'Paper', 'Scissors'];
 
-for (var i = 0; i < guessBtns.length; i++) {
+for (let i = 0; i < guessBtns.length; i++) {
   guessBtns[i].addEventListener("click", function() {
-    for (var j = 0; j < guessBtns.length; j++) {
+    for (let j = 0; j < guessBtns.length; j++) {
       guessBtns[j].classList.remove("active");
     }
-    user_guess = this.classList[0]
+    user_guess = guesses[i];
+    guessTitle.innerHTML= 'Your guessed ' + user_guess;
+
     // Add the active class to the clicked button
     this.classList.add("active");
     if(user_guess != ''){
@@ -29,6 +33,7 @@ for (var i = 0; i < guessBtns.length; i++) {
     }
   });
 }
+
 
 
 const playBtn = document.querySelector('.play');
@@ -260,12 +265,11 @@ function stopBalls(balls) {
 
 // animation
 function animation(time) {
-  console.log(user_guess)
   //rotations
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
   room.rotation.y -= 0.0030;
-
+console.log(user_guess)
   renderer.clear();
   //count ball and update result
   count();
