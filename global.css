@@ -8,6 +8,20 @@ canvas {
   overflow: hidden;
 }
 
+html{
+  background: #11e8bb; /* Old browsers */
+  background: -moz-linear-gradient(top,  #11e8bb 0%, #8200c9 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #11e8bb 0%,#8200c9 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #11e8bb 0%,#8200c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#11e8bb', endColorstr='#8200c9',GradientType=0 ); /* IE6-9 */
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 
@@ -21,14 +35,27 @@ canvas {
   font-weight: 500;
   font-family: 'Fredoka One', cursive;
   color: #363535;
-text-align: center;
+  text-align: center;
 }
 
-.replay {
+.guess_title{
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: 500;
+  font-family: 'Fredoka One', cursive;
+  color: #1d1d1d;
+  text-align: center;
+}
+
+.play {
   position: fixed;
   bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
+  width: 120px;
   background: #FF4742;
   border: 1px solid #FF4742;
   border-radius: 6px;
@@ -53,28 +80,72 @@ text-align: center;
   vertical-align: middle;
 }
 
-.replay:hover,
-.replay:active {
+.play:hover,
+.play:active {
   background-color: initial;
   background-position: 0 0;
   color: #FFFFFF;
   border: 1px solid #FFFFFF;
 }
 
-.replay:active {
+.play:active {
   opacity: .5;
 }
 
-html{
-  background: #11e8bb; /* Old browsers */
-  background: -moz-linear-gradient(top,  #11e8bb 0%, #8200c9 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top,  #11e8bb 0%,#8200c9 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom,  #11e8bb 0%,#8200c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#11e8bb', endColorstr='#8200c9',GradientType=0 ); /* IE6-9 */
-  overflow: hidden;
+.body_guess{
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display:flex;
+  width: 400px;
+  margin: 0 auto;
+  align-items: flex-end; 
+  justify-content: space-between;
+  
 }
 
-body {
-  margin: 0;
-  padding: 0;
+
+.guess_rock, .guess_paper, .guess_scissors {
+  width: 120px;
+  background:  none;
+  border: 1px solid #FF4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #FF4742;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.guess_rock:hover, .guess_rock:active,
+.guess_paper:hover, .guess_scissors:hover,
+.guess_paper:hover, .guess_scissors:active {
+  background-color: initial;
+  background-position: 0 0;
+  background-color: #FFFFFF;
+  color: #FF4742;
+  border: 1px solid #FFFFFF;
+}
+
+.active{
+  background-color: initial;
+  background-position: 0 0;
+  background-color: #FFFFFF;
+  color: #FF4742;
+  border: 1px solid #FFFFFF;
 }
