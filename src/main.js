@@ -5,6 +5,48 @@ import { Sphere } from "./Sphere.js";
 import { TextGeometry} from"https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/geometries/TextGeometry.js";
 import {FontLoader} from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/FontLoader.js";
 import Stats from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/libs/stats.module.js";
+
+let user_guess = '';
+let onGame = false;
+let guessBtns = [];
+const guessRockBtn = document.querySelector('.guess_rock')
+const guessPaperBtn = document.querySelector('.guess_paper')
+const guessScissorsBtn = document.querySelector('.guess_scissors')
+guessBtns.push(guessRockBtn);
+guessBtns.push(guessPaperBtn);
+guessBtns.push(guessScissorsBtn);
+
+for (var i = 0; i < guessBtns.length; i++) {
+  guessBtns[i].addEventListener("click", function() {
+    for (var j = 0; j < guessBtns.length; j++) {
+      guessBtns[j].classList.remove("active");
+    }
+    user_guess = this.classList[0]
+    // Add the active class to the clicked button
+    this.classList.add("active");
+    if(user_guess != ''){
+      playBtn.style.display = 'block';
+    }
+  });
+}
+
+
+const playBtn = document.querySelector('.play');
+playBtn.style.display = 'none';
+if(user_guess != ''){
+  playBtn.style.display = 'block';
+  
+}
+playBtn.addEventListener('click', function() {
+  onGame = true;
+  for (var i = 0; i < guessBtns.length; i++) {
+    guessBtns[i].disabled = true;
+    guessBtns[i].style.pointerEvents = 'none';//auto
+  }
+  playBtn.style.display = 'none';
+});
+
+
 //scene, camera and renderer
 const scene = new THREE.Scene();
 
@@ -23,7 +65,6 @@ renderer.setClearColor(0x000000, 0.0);
 
 
 
-
 // const stats = new Stats();
 // stats.showPanel( 1 );  // 0: fps, 1: ms, 2: mb, 3+: custom
 // document.body.appendChild( stats.dom );
@@ -31,7 +72,7 @@ renderer.setClearColor(0x000000, 0.0);
 
 
 
-
+// Particles
 var particle = new THREE.Object3D();
 
 scene.add(particle);
@@ -52,23 +93,10 @@ for (var i = 0; i < 1000; i++) {
 }
 
 
-
-
-
-
-
+//window resize
 window.addEventListener('resize', function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-
-
-
-
-
-
-
-
 
 //lights
 const light = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -77,14 +105,7 @@ const light2 = new THREE.AmbientLight(0xffffff, 0.9);
 light2.position.set(0, 0, 0);
 scene.add(light2);
 
-
-
-
-
-
-
-
-
+//create room
 let room = new THREE.LineSegments(
   new BoxLineGeometry(1, 1, 1, 1, 1, 1),
   new THREE.LineBasicMaterial({ color: 0x808080 })
@@ -92,6 +113,7 @@ let room = new THREE.LineSegments(
 scene.add(room);
 
 
+//load texture (rps)
 const textureLoader = new THREE.TextureLoader();
 const rockTex = textureLoader.load('../res/imgs/rock.png');
 const paperTex = textureLoader.load('../res/imgs/paper.png');
@@ -101,23 +123,19 @@ const scissorsTex = textureLoader.load('../res/imgs/scissors.png');
 //create ball
 const recRad = 0.5;
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "red", "rock", room, rockTex);
+  const sphere = new Sphere(recRad, "red", "rock", room, rockTex, onGame);
   room.add(sphere);
 }
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "orange", "paper", room, paperTex);
+  const sphere = new Sphere(recRad, "orange", "paper", room, paperTex, onGame);
   room.add(sphere);
 }
 for (let i = 0; i < 50; i++) {
-  const sphere = new Sphere(recRad, "green", "scissors", room, scissorsTex);
+  const sphere = new Sphere(recRad, "green", "scissors", room, scissorsTex, onGame);
   room.add(sphere);
 }
 
-
-
-
-
-
+//orbit control
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableZoom = false;
 controls.enableRotate = false;
@@ -128,47 +146,10 @@ document.body.appendChild(renderer.domElement);
 
 
 
+//live result
 let rock, paper, scissors;
 
-// const fontLoader = new FontLoader();
-// const font = fontLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-//   let text = 'Rock Payer Scissor!',
-
-//     bevelEnabled = true;
-
-//   const height = 0.3,
-//     size = 0.3,
-//     hover = 30,
-
-//     curveSegments = 12,
-
-//     bevelThickness = 0,
-//     bevelSize = 0;
-
-//   let textGeometry = new TextGeometry(text, {
-//     font: font,
-//     size: size,
-//     height: height,
-//     curveSegments: curveSegments,
-
-//     bevelThickness: bevelThickness,
-//     bevelSize: bevelSize,
-//     bevelEnabled: bevelEnabled
-//   });
-
-//   const material = new THREE.MeshBasicMaterial({ color: new THREE.Color('black').getHex() });
-//   const textMesh = new THREE.Mesh(textGeometry, material);
-//   // const centerOffset = - 0.5 * ( textGeometry.position.max.x - textGeometry.boundingBox.min.x );
-//   console.log(textGeometry)
-//   textMesh.position.x = -2;
-//   textMesh.position.y = 1;
-//   textMesh.position.z = 0;
-
-//   textMesh.rotation.x = 0;
-//   textMesh.rotation.y = 0.5;
-//   scene.add(textMesh);
-// });
-
+//display texture (rps)
 var rockMesh = new THREE.Mesh(
   new THREE.PlaneGeometry(0.16, 0.16),
   new THREE.MeshBasicMaterial({
@@ -196,10 +177,12 @@ var scissorsMesh = new THREE.Mesh(
 ));
 scene.add(scissorsMesh)
 
+//img relocation
 rockMesh.position.set(camera.projectionMatrix.elements[5]-0.4,-0.5,0); //0,5,10,14
 paperMesh.position.set(camera.projectionMatrix.elements[5]-0.2,-0.5,0); //0,5,10,14
 scissorsMesh.position.set(camera.projectionMatrix.elements[5],-0.5,0); //0,5,10,14
 
+//graphs
 let iSize = 0.4;
 const redBoxGeo= new THREE.PlaneGeometry(iSize, iSize);
 const redMat = new THREE.MeshBasicMaterial({color: new THREE.Color('red').getHex()});
@@ -250,24 +233,8 @@ function count() {
   orangeMesh.rotation.set(0,0,0)
   greenMesh.rotation.set(0,0,0)
 
-  // const scoreDiv = document.querySelector(".score");
-  // scoreDiv.innerHTML =
-  //   "rock(red): " +
-  //   (rock /150 *100).toFixed(0) + "%"+
-  //   "\npaper(orange): " +
-  //   (paper /150 *100).toFixed(0) + "%"+
-  //   "\nscissors(green): " +
-  //   (scissors /150 *100).toFixed(0) + "%";
-
-  if (rock == 150) {
+  if (rock == 150 || paper == 150 || scissors == 150) {
     stopBalls(room.children);
-    // scoreDiv.innerHTML = "Rock Won!";
-  } else if (paper == 150) {
-    stopBalls(room.children);
-    // scoreDiv.innerHTML = "Paper Won!";
-  } else if (scissors == 150) {
-    stopBalls(room.children);
-    // scoreDiv.innerHTML = "Scissors Won!";
   }
 }
 
@@ -285,40 +252,42 @@ function stopBalls(balls) {
   balls.forEach((o) => {
     o.stop();
   });
-  replayBtn.style.display = 'block';
+  playBtn.style.display = 'block';
+  
 }
 
 
 
-const replayBtn = document.querySelector('.replay');
-replayBtn.style.display = 'none';
-
-replayBtn.addEventListener('click', function() {
-  replayBtn.style.display = 'none';
-  location.reload();
-});
-
-
 // animation
 function animation(time) {
+  console.log(user_guess)
+  //rotations
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
   room.rotation.y -= 0.0030;
 
   renderer.clear();
-
+  //count ball and update result
   count();
+  room.children.forEach((o) => {
+    o.material.color.set(new THREE.Color(onGame? o.color : 'white').getHex())
+  });
 
+  if(onGame){
+  //collision event
   collissionEvent();
 
+  //glitch bug rollback
   room.children.forEach((o) => {
     o.glitchFree();
   });
 
+  //ball move
   room.children.forEach((o) => {
     o.move();
   });
   
+  }
 
   renderer.render(scene, camera);
   // stats.update()

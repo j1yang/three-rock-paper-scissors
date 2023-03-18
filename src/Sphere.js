@@ -25,11 +25,12 @@ let box = new THREE.Box3();
 
 export class Sphere extends THREE.Mesh
 {
-  constructor(roomRadius, color, name,room,texture) {
+  constructor(roomRadius, color, name,room,texture, onGame) {
     const material = new THREE.MeshLambertMaterial({ color: color, alphaMap : texture});
     super(geometry, material)
-    this.respondZone = roomRadius - 0.05;
+    this.onGame = onGame;
     this.color = color;
+    this.respondZone = roomRadius - 0.05;
     this.name = name;
     this.room = room;
     box = new THREE.Box3().setFromObject(this.room);
@@ -69,6 +70,7 @@ export class Sphere extends THREE.Mesh
   }
 
   move(){
+
     if(!this.isEnd){
       this.position.copy(new THREE.Vector3(
         this.position.x + this.velocity.x,
