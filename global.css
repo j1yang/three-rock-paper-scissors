@@ -61,7 +61,7 @@ body {
   text-align: center;
 }
 
-.play {
+.play, .replay {
   position: fixed;
   bottom: 25px;
   left: 50%;
@@ -91,15 +91,15 @@ body {
   vertical-align: middle;
 }
 
-.play:hover,
-.play:active {
+.play:hover, .replay:hover,
+.play:active, .replay:active {
   background-color: initial;
   background-position: 0 0;
   color: #FFFFFF;
   border: 1px solid #FFFFFF;
 }
 
-.play:active {
+.play:active, .replay:active {
   opacity: .5;
 }
 
