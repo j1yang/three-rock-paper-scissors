@@ -28,7 +28,7 @@ body {
 
 .body_title{
   position: fixed;
-  top: 35px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 70px;
@@ -159,4 +159,12 @@ body {
   background-color: #FFFFFF;
   color: #FF4742;
   border: 1px solid #FFFFFF;
+}
+
+.blink {
+  animation: blinker 2.2s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
 }

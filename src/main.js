@@ -45,10 +45,12 @@ const playBtn = document.querySelector('.play');
 playBtn.style.display = 'none';
 if(user_guess != ''){
   playBtn.style.display = 'block';
-  
+}else{
+  gameResult.classList.add('blink');
 }
 playBtn.addEventListener('click', function() {
   onGame = true;
+  gameResult.classList.remove('blink');
   for (var i = 0; i < guessBtns.length; i++) {
     guessBtns[i].disabled = true;
     guessBtns[i].style.pointerEvents = 'none';//auto
@@ -65,6 +67,7 @@ replayBtn.addEventListener('click', function() {
     guessBtns[i].style.pointerEvents = 'auto';
     guessBtns[i].classList.remove("active");
   }
+  gameResult.classList.add('blink');
   onGame = false;
   isGameEnd = false;
   user_guess = '';
@@ -105,7 +108,7 @@ const camera = new THREE.PerspectiveCamera(
   0.01,
   10
 );
-camera.position.set(1.5, 0.5, 2);
+camera.position.set(1.5, 0.2, 2);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
