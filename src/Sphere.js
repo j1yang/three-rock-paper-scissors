@@ -49,7 +49,7 @@ export class Sphere extends THREE.Mesh
   
   glitchFree(){
     if(!box.containsPoint(this.position)){
-      //this.material.color.set(new THREE.Color('blue').getHex());
+      this.material.color.set(new THREE.Color('blue').getHex());
       if ((this.position.x - (radius+0.07)) < box.min.x ) {
         this.position.x = -this.respondZone;
       }else if((this.position.x + (radius+0.07)) > box.max.x){

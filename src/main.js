@@ -72,13 +72,11 @@ replayBtn.addEventListener('click', function() {
   rock = 0;
   paper =0;
   scissors = 0;
-  room.children.forEach((o)=>{
-    
-  })
   while (room.children.length > 0) {
     room.remove(room.children[0]);
   }
-  //create ball
+  room.position.set(0,0,0)
+  room.rotation.set(0,0,0)
   const recRad = 0.5;
   for (let i = 0; i < 50; i++) {
     const sphere = new Sphere(recRad, "red", "rock", room, rockTex, onGame);
@@ -162,8 +160,7 @@ let room = new THREE.LineSegments(
   new THREE.LineBasicMaterial({ color: 0x808080 })
 );
 scene.add(room);
-
-
+console.log(room)
 //load texture (rps)
 const textureLoader = new THREE.TextureLoader();
 const rockTex = textureLoader.load('../res/imgs/rock.png');
@@ -342,7 +339,6 @@ function animation(time) {
   //rotations
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
-  room.rotation.y -= 0.0030;
   renderer.clear();
 
   //count ball and update result
@@ -352,6 +348,8 @@ function animation(time) {
   });
 
   if(onGame){
+    room.rotation.y -= 0.0030;
+
   //collision event
   collissionEvent();
 
