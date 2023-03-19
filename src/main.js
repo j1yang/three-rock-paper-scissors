@@ -9,6 +9,10 @@ import Stats from "https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/libs/
 let user_guess = '';
 let onGame = false;
 let guessBtns = [];
+
+let rock, paper, scissors, winner;
+let isGameEnd = false;
+
 const guessTitle = document.querySelector('.guess_title')
 const guessRockBtn = document.querySelector('.guess_rock')
 const guessPaperBtn = document.querySelector('.guess_paper')
@@ -50,6 +54,47 @@ playBtn.addEventListener('click', function() {
     guessBtns[i].style.pointerEvents = 'none';//auto
   }
   playBtn.style.display = 'none';
+});
+
+const replayBtn = document.querySelector('.replay');
+replayBtn.style.display = 'none';
+
+replayBtn.addEventListener('click', function() {
+  for (var i = 0; i < guessBtns.length; i++) {
+    guessBtns[i].disabled = false;
+    guessBtns[i].style.pointerEvents = 'auto';
+    guessBtns[i].classList.remove("active");
+  }
+  onGame = false;
+  isGameEnd = false;
+  user_guess = '';
+  winner = '';
+  rock = 0;
+  paper =0;
+  scissors = 0;
+  room.children.forEach((o)=>{
+    
+  })
+  while (room.children.length > 0) {
+    room.remove(room.children[0]);
+  }
+  //create ball
+  const recRad = 0.5;
+  for (let i = 0; i < 50; i++) {
+    const sphere = new Sphere(recRad, "red", "rock", room, rockTex, onGame);
+    room.add(sphere);
+  }
+  for (let i = 0; i < 50; i++) {
+    const sphere = new Sphere(recRad, "orange", "paper", room, paperTex, onGame);
+    room.add(sphere);
+  }
+  for (let i = 0; i < 50; i++) {
+    const sphere = new Sphere(recRad, "green", "scissors", room, scissorsTex, onGame);
+    room.add(sphere);
+  }
+
+  guessTitle.innerHTML= 'Your guess?';
+  gameResult.innerHTML= '{Please guess and play}';
 });
 
 
@@ -152,9 +197,7 @@ document.body.appendChild(renderer.domElement);
 
 
 
-//live result
-let rock, paper, scissors, winner;
-let isGameEnd = false;
+
 
 //display texture (rps)
 var rockMesh = new THREE.Mesh(
@@ -254,7 +297,7 @@ function count() {
     stopBalls(room.children);
   }
 
-  if(!isGameEnd){
+  if(!isGameEnd){//false
     if (rock > paper && rock > scissors) {
       gameResult.innerHTML= `Rock is winning!`;
     } else if (paper > rock && paper > scissors) {
@@ -262,19 +305,18 @@ function count() {
     } else if (scissors > rock && scissors > paper) {
       gameResult.innerHTML = "Scissors is winning!";
     }
-  }else{
-    if(user_guess === winner){
-      gameResult.innerHTML = 'You Won!';
-    }else{
-      gameResult.innerHTML = 'You Lost!';
+    replayBtn.style.display = 'none';
+  }else{//true
+    if(user_guess != ''){
+      if(user_guess === winner){
+        gameResult.innerHTML = 'You Won!';
+      }else{
+        gameResult.innerHTML = 'You Lost!';
+      }
     }
+    replayBtn.style.display = 'block';
   }
 
-  
-
-  // determine which response was picked the most
-
-  
 }
 
 function collissionEvent() {
@@ -291,8 +333,6 @@ function stopBalls(balls) {
   balls.forEach((o) => {
     o.stop();
   });
-  playBtn.style.display = 'block';
-  
 }
 
 
@@ -303,12 +343,12 @@ function animation(time) {
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
   room.rotation.y -= 0.0030;
-console.log(user_guess)
   renderer.clear();
+
   //count ball and update result
   count();
   room.children.forEach((o) => {
-    o.material.color.set(new THREE.Color(onGame? o.color : 'white').getHex())
+    o.material.color.set(new THREE.Color(onGame? o.color : 'skyblue').getHex())
   });
 
   if(onGame){
@@ -326,7 +366,7 @@ console.log(user_guess)
   });
   
   }
-
+  
   renderer.render(scene, camera);
   // stats.update()
 }
