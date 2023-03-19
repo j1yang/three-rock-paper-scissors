@@ -29,7 +29,7 @@ for (let i = 0; i < guessBtns.length; i++) {
       guessBtns[j].classList.remove("active");
     }
     user_guess = guesses[i];
-    guessTitle.innerHTML= 'Your guessed {' + user_guess +'}';
+    guessTitle.innerHTML= 'Your guessed ' + user_guess +'.';
 
     // Add the active class to the clicked button
     this.classList.add("active");
@@ -94,8 +94,8 @@ replayBtn.addEventListener('click', function() {
     room.add(sphere);
   }
 
-  guessTitle.innerHTML= 'Your guess?';
-  gameResult.innerHTML= '{Please guess and play}';
+  guessTitle.innerHTML= 'What\'s your guess?';
+  gameResult.innerHTML= 'Please guess and play';
 });
 
 
@@ -299,19 +299,19 @@ function count() {
 
   if(!isGameEnd){//false
     if (rock > paper && rock > scissors) {
-      gameResult.innerHTML= `Rock is winning!`;
+      gameResult.innerHTML= `Rock!`;
     } else if (paper > rock && paper > scissors) {
-      gameResult.innerHTML = "Paper is winning!";
+      gameResult.innerHTML = "Paper!";
     } else if (scissors > rock && scissors > paper) {
-      gameResult.innerHTML = "Scissors is winning!";
+      gameResult.innerHTML = "Scissors!";
     }
     replayBtn.style.display = 'none';
   }else{//true
     if(user_guess != ''){
       if(user_guess === winner){
-        gameResult.innerHTML = 'You Won!';
+        gameResult.innerHTML = 'YOU WON!';
       }else{
-        gameResult.innerHTML = 'You Lost!';
+        gameResult.innerHTML = 'YOU LOST.';
       }
     }
     replayBtn.style.display = 'block';
@@ -339,17 +339,10 @@ function stopBalls(balls) {
 
 // animation
 function animation(time) {
-  //rotations
-  particle.rotation.x += 0.0000;
-  particle.rotation.y -= 0.0040;
-  renderer.clear();
-
+  
   //count ball and update result
   count();
-  room.children.forEach((o) => {
-    o.material.color.set(new THREE.Color(onGame? o.color : 'skyblue').getHex())
-  });
-
+  
   if(onGame){
     room.rotation.y -= 0.0030;
 
@@ -365,9 +358,17 @@ function animation(time) {
   room.children.forEach((o) => {
     o.move();
   });
-  
   }
   
+  room.children.forEach((o) => {
+    o.material.color.set(new THREE.Color(onGame? o.color : 'skyblue').getHex())
+  });
+
+  //rotations
+  particle.rotation.x += 0.0000;
+  particle.rotation.y -= 0.0040;
+  renderer.clear();
+
   renderer.render(scene, camera);
   // stats.update()
 }

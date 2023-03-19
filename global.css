@@ -57,7 +57,7 @@ body {
   font-size: 30px;
   font-weight: 500;
   font-family: 'Fredoka One', cursive;
-  color: #1d1d1d;
+  color: #d9d1d1;
   text-align: center;
 }
 
@@ -93,10 +93,10 @@ body {
 
 .play:hover, .replay:hover,
 .play:active, .replay:active {
-  background-color: initial;
+  background-color: FF4742;
   background-position: 0 0;
   color: #FFFFFF;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #FF4742;
 }
 
 .play:active, .replay:active {
@@ -120,11 +120,11 @@ body {
 .guess_rock, .guess_paper, .guess_scissors {
   width: 120px;
   background:  none;
-  border: 1px solid #FF4742;
+  border: 1px solid #9cc2ce79;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
-  color: #FF4742;
+  color: #FFFFFF;
   cursor: pointer;
   display: inline-block;
   font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
@@ -149,7 +149,7 @@ body {
   background-color: initial;
   background-position: 0 0;
   background-color: #FFFFFF;
-  color: #FF4742;
+  color: #1d1d1d;
   border: 1px solid #FFFFFF;
 }
 
@@ -157,7 +157,7 @@ body {
   background-color: initial;
   background-position: 0 0;
   background-color: #FFFFFF;
-  color: #FF4742;
+  color: #1d1d1d;
   border: 1px solid #FFFFFF;
 }
 
