@@ -29,7 +29,7 @@ for (let i = 0; i < guessBtns.length; i++) {
       guessBtns[j].classList.remove("active");
     }
     user_guess = guesses[i];
-    guessTitle.innerHTML= 'Your guessed ' + user_guess +'.';
+    guessTitle.innerHTML= 'You guessed ' + user_guess +'.';
 
     // Add the active class to the clicked button
     this.classList.add("active");
@@ -163,7 +163,6 @@ let room = new THREE.LineSegments(
   new THREE.LineBasicMaterial({ color: 0x808080 })
 );
 scene.add(room);
-console.log(room)
 //load texture (rps)
 const textureLoader = new THREE.TextureLoader();
 const rockTex = textureLoader.load('../res/imgs/rock.png');
